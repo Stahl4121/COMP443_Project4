@@ -27,8 +27,8 @@ def is_int(s):
     except ValueError:
         return False
 
-def is_string(s):
-    if (s[0] is '"' and s[-1] is '"' and " " not in s and '"' not in s[1:][:-1]):
+def is_stringLiteral(s):
+    if (s[0] == '"' and s[-1] == '"' and '"' not in s[1:][:-1] and '\'' not in s[1:][:-1]):
         return True
     return False
 
@@ -53,15 +53,14 @@ def parse_tokens(tokens):
     """
     
     check(len(tokens) > 0)
-        
+
     start = tokens[0]
     
     if is_int(start):
         return ( Num(int(start)), tokens[1:] )
         #else raise GroveError("GROVE: negative value found")
 
-    elif len(start) > 2 and start[0] == "\"":
-        expect(start[-1], "\"")
+    elif is_stringLiteral(start):
         return (StringLiteral(start), tokens[1:] )
     
     elif start == "+":
@@ -82,30 +81,42 @@ def parse_tokens(tokens):
         # An assignment statement
         # Get the name
         (varname, tokens) = parse_tokens (tokens[1:])
-        
+        check(len(tokens) > 1)
         expect(tokens[0], "=")
-        (child, tokens) = parse_tokens(tokens[1:])
-        if child is "new":
-            (object1,tokens) = parse_tokens[1:]
-            if '.' in object1:
-                """
-TODO: allow for creating python objects
-"""
+        if tokens[1] == "new":
+            check(len(tokens) > 2)
+            names = tokens[2].split(".")
+            check(len(names) < 3)
+            if len(names) == 1:
+                """ "set" <Name> "=" "new" <Name> """
+                #TODO
+            else:
+                """ "set" <Name> "=" "new" <Name>"."<Name> """
+                #TODO
+
         else:
+            #Assign an expr
+            (child, tokens) = parse_tokens(tokens[1:])
             return ( Stmt(varname, child), tokens )
-        
-    elif is_string(start) and len(start) > 0:
+    
+    elif start == "import":
+        """ Wes's import code here """
+        #TODO
+    
+    elif start == "call":
+        """ See bullet point in pdf doc """
+        #TODO
+
+    else:
         # A variable
         # Check that it is alphabetic characters
         if not (start[0].isalpha() or start[0] == "_"):
             check(False, "Variable names must start with an alphabetic character")
         if not ''.join(filter(lambda i: i != '_', start[1:])).isalnum():
             check(False, "Variable names must be alphanumeric characters only")
-            
+
         return ( Name(start), tokens[1:] )
 
-    else:
-        check(False, "Error parsing. Invalid command.")
 
 
 

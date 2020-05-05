@@ -41,10 +41,7 @@ class Addition(Expr):
 
 class StringLiteral(Expr):
     def __init__(self, string):
-        strVal = string[1:][:-1]
-        if "\"" in strVal or "\'" in strVal:
-            raise GroveError("GROVE: Invalid StringLiteral: " + string)
-        self.value = strVal
+        self.value = string[1:][:-1]
 
     def eval(self):
         return self.value
@@ -52,9 +49,6 @@ class StringLiteral(Expr):
 
 
 class Name(Expr):
-# see in second statement - - i do not have the value - -- I do not have an instance of the class 
-# I just have the string value of the name in the set - -- so I need table of string names to what they
-# evaluated to during the set operation
     def __init__(self, name):
         self.name = name
 
