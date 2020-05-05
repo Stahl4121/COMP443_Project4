@@ -80,12 +80,8 @@ def parse_tokens(tokens):
             
     elif start == "set":
         # An assignment statement
-        
         # Get the name
         (varname, tokens) = parse_tokens (tokens[1:])
-
-            
-
         
         expect(tokens[0], "=")
         (child, tokens) = parse_tokens(tokens[1:])

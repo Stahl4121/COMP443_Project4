@@ -7,7 +7,7 @@ if __name__ == "__main__":
         try:
             root = parse(ln)
             output = root.eval()
-            if output:
+            if output is not None:
                 print(output)
         except GroveError as GE:
             print(GE)
