@@ -4,10 +4,6 @@ import sys
 
 var_table = {}
 
-class GroveError(Exception):
-    def __init__(self,*args,**kwargs):
-        Exception.__init__(self,*args,**kwargs)
-
 class Expr:
     pass
 
