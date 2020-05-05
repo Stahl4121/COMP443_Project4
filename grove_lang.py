@@ -1,6 +1,7 @@
 from grove_parse import *
 from grove_error import GroveError
 import sys
+import importlib
 
 var_table = {}
 
@@ -68,15 +69,20 @@ class Stmt:
     def __init__(self, varname, expr):
         self.varname = varname
         self.expr = expr
-        if not isinstance(self.expr, Expr):
+        if not isinstance(self.expr, Expr) and not self.varname == "import":
             raise GroveError(
                 "GROVE: expected expression but received " + str(type(self.expr)))
 
-        if not isinstance(self.varname, Name):
+        if not isinstance(self.varname, Name) and not self.varname == "import":
             raise GroveError(
                 "GROVE: expected variable name but received " + str(type(self.varname)))
 
     def eval(self):
-        var_table[self.varname.getName()] = self.expr.eval()
-
+        if (self.varname == "import"):
+            try:
+                globals()[str(self.expr)] = importlib.import_module(str(self.expr))
+            except:
+                raise GroveError("GROVE: cannot import that module")
+        else:
+            var_table[self.varname.getName()] = self.expr.eval()
 
