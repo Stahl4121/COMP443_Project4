@@ -94,17 +94,18 @@ TODO: allow for creating python objects
         else:
             return ( Stmt(varname, child), tokens )
         
-    else:
-        # A variable name is the only option remaining
+    elif is_string(start) and len(start) > 0:
+        # A variable
         # Check that it is alphabetic characters
-        if (len(start) > 1):
-            if ((not start[0].isalpha() and not start[0] == "_") or not (''.join(filter(lambda i: not i is '_', start[1:]))).isalnum()):
-                check(False, "Variable names must be alphabetic characters only")
-        elif (not start[0].isalpha() and not start[0] == "_"):
-            check(False, "Variable names must be alphabetic characters only")
+        if not (start[0].isalpha() or start[0] == "_"):
+            check(False, "Variable names must start with an alphabetic character")
+        if not ''.join(filter(lambda i: i != '_', start[1:])).isalnum():
+            check(False, "Variable names must be alphanumeric characters only")
+            
         return ( Name(start), tokens[1:] )
 
-
+    else:
+        check(False, "Error parsing. Invalid command.")
 
 
 

@@ -65,9 +65,9 @@ class Name(Expr):
 
         if self.name in var_table:
             return var_table[self.name]
+        elif self.name == "quit" or self.name == "exit":
+            sys.exit()
         else:
-            if self.name == "quit" or self.name == "exit":
-                sys.exit()
             raise GroveError("GROVE: undefined variable " + self.name)
 
 class Stmt:
