@@ -4,7 +4,7 @@ from grove_error import GroveError
 
 
 def check(condition, message = "Unexpected end of expression"):
-    """ Checks if condition is true, raising a ValueError otherwise """
+    """ Checks if condition is true, raising a GroveError otherwise """
     if not condition:
         raise GroveError("GROVE: " + message)
         
@@ -20,7 +20,7 @@ def is_expr(x):
         
         
 def is_int(s):
-    """ Takes a string and returns True if in can be converted to an integer """
+    """ Takes a string and returns True if it can be converted to an integer """
     try:
         int(s)
         return True
@@ -60,11 +60,12 @@ def parse_tokens(tokens):
         return ( Num(int(start)), tokens[1:] )
         #else raise GroveError("GROVE: negative value found")
 
-    if is_string(start):
+    elif len(start) > 2 and start[0] == "\"":
+        expect(start[-1], "\"")
         return (StringLiteral(start), tokens[1:] )
     
-    elif start is "+":
-        # An addition or subtraction
+    elif start == "+":
+        # An addition 
         check(len(tokens) > 2)
         expect(tokens[1], "(")
         (child1, tokens) = parse_tokens(tokens[2:])

@@ -41,8 +41,8 @@ class Addition(Expr):
 
 class StringLiteral(Expr):
     def __init__(self, string):
-        if " " in string:
-            raise GroveError("GROVE: invalid StringLiteral: " + string)
+        if "\"" in string or "\'" in string:
+            raise GroveError("GROVE: Invalid StringLiteral: " + string)
         self.value = string[1:][:-1]
 
     def eval(self):
