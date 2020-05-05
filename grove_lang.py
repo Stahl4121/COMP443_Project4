@@ -1,4 +1,5 @@
 from grove_parse import *
+from grove_error import GroveError
 import sys
 
 var_table = {}

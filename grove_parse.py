@@ -1,5 +1,7 @@
 #exec(open("grove_lang.py").read())
 from grove_lang import *
+from grove_error import GroveError
+
 
 def check(condition, message = "Unexpected end of expression"):
     """ Checks if condition is true, raising a ValueError otherwise """
