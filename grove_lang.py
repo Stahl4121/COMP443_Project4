@@ -8,7 +8,6 @@ var_table = {}
 class Expr:
     pass
 
-
 class Num(Expr):
 # inheritance Expr..... NOT constructor value like in other languages
     def __init__(self, value):
@@ -113,7 +112,7 @@ class PyObject(Expr):
                 module = eval(modAndObj[0].replace("__",""))
                 obj = getattr(module, modAndObj[1])
 
-        return obj
+        return obj()
 
 class Stmt:
     def __init__(self, varname, expr):
@@ -135,4 +134,3 @@ class Stmt:
                 raise GroveError("GROVE: cannot import that module")
         else:
             var_table[self.varname.getName()] = self.expr.eval()
-

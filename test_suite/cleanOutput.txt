@@ -1,8 +1,2 @@
-Traceback (most recent call last):
-  File "grove.py", line 8, in <module>
-    root = parse(ln)
-  File "C:\GitHub\COMP443_Project4\test_suite\grove_parse.py", line 49, in parse
-    (root, remaining_tokens) = parse_tokens(s.split())
-  File "C:\GitHub\COMP443_Project4\test_suite\grove_parse.py", line 106, in parse_tokens
-    (child, tokens) = parse_tokens(tokens[1:])
-TypeError: cannot unpack non-iterable NoneType object
+9
+145
