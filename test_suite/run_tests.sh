@@ -2,7 +2,7 @@
 
 set -u
 
-py="python3"
+py="python"
 $py check_errors.py
 totalPoints=$?
 
@@ -87,3 +87,6 @@ done
 echo "$totalPoints total points"
 
 echo "{\"scores\" : {\"all\": ${totalPoints} } }"
+
+
+read -p "Press enter to continue"
