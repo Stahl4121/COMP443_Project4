@@ -85,7 +85,23 @@ class PyObject(Expr):
         self.value = value
 
     def eval(self):
-        return eval(self.value)
+        try:
+            obj = eval(self.value)
+        except:
+            try:
+                # Must access through module
+                modAndObj = self.value.split(".")
+                module = eval(modAndObj[0])
+                obj = getattr(module, modAndObj[1])
+            except:
+                #Edge case, I am struggling Dr. Hutchins
+                #https://stackoverflow.com/questions/11181519/python-whats-the-difference-between-builtin-and-builtins
+                import builtins 
+                modAndObj = self.value.split(".")
+                module = eval(modAndObj[0].replace("__",""))
+                obj = getattr(module, modAndObj[1])
+
+        return obj
 
 class Stmt:
     def __init__(self, varname, expr):
