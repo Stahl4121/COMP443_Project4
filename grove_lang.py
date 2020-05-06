@@ -46,12 +46,24 @@ class StringLiteral(Expr):
 
     def eval(self):
         return self.value
+        
 class Method(Expr):
-    def __init__(self, string):
-        self.value = string[1:][:-1]
+    def __init__(self, objName, methodName, *expressions):
+        self.objName = objName
+        self.methodName = methodName
+        self.expressions = expressions
 
     def eval(self):
-        return self.value
+        # If the object name does not exist in the variables table, raise a GroveError.
+        #TODO
+
+        # Check that the specified object has the method by using introspection. If
+        # the method is not defined, raise a GroveError with a message indicating which
+        # method is not defined.
+        # Make sure to pass the expressions variable (if not empty) to the method 
+        #TODO
+
+        return
 
 class Name(Expr):
     def __init__(self, name):
