@@ -43,7 +43,6 @@ class Addition(Expr):
 class StringLiteral(Expr):
     def __init__(self, string):
         self.value = string[1:][:-1]
-
     def eval(self):
         return self.value
         
@@ -54,19 +53,26 @@ class Method(Expr):
         self.expressions = expressions
 
     def eval(self):
-        # If the object name does not exist in the variables table, raise a GroveError.
-        if self.varname not in var_table.keys():
-            raise GroveError("GROVE: Undefined variable " + str(self.varname))
+        retVal = "No return value"
+        varnameGot = self.varname.getName()
+        methodNameGot = self.methodName.getName()
 
-        obj = var_table[self.varname]
+        # If the object name does not exist in the variables table, raise a GroveError.
+        if varnameGot not in var_table.keys():
+            raise GroveError("GROVE: Undefined variable " + str(varnameGot))
+
+        obj = var_table[varnameGot]
         methodList = [method for method in dir(obj) if callable(getattr(obj, method))]
         
-        if self.methodName not in methodList:
-            raise GroveError("GROVE: Undefined method " + str(self.methodName))
+        if methodNameGot not in methodList:
+            raise GroveError("GROVE: Undefined method " + str(methodNameGot))
 
-        getattr(obj, methodName)(*expressions)
+        if self.expressions:
+            retVal = getattr(obj, methodNameGot)(self.expressions)
+        else:
+            retVal = getattr(obj, methodNameGot)()
 
-        return
+        return retVal
 
 class Name(Expr):
     def __init__(self, name):

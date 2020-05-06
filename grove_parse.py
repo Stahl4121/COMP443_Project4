@@ -137,7 +137,6 @@ def parse_tokens(tokens):
 
     else:
         # A variable
-        print(start)
         check(is_var(start), "Variable names must start with an alphabetic character and continue with alphanumeric characters.")
         return ( Name(start), tokens[1:] )
 
