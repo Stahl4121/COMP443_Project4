@@ -46,8 +46,12 @@ class StringLiteral(Expr):
 
     def eval(self):
         return self.value
+class Method(Expr):
+    def __init__(self, string):
+        self.value = string[1:][:-1]
 
-
+    def eval(self):
+        return self.value
 
 class Name(Expr):
     def __init__(self, name):

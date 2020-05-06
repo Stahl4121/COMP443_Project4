@@ -41,7 +41,6 @@ def is_var(s):
             return False
 
     return True
-
         
 def parse(s):
     """ Return an object representing a parsed command
@@ -52,9 +51,7 @@ def parse(s):
     check(len(remaining_tokens) == 0,
         "Expected end of command but found '" + " ".join(remaining_tokens) + "'")
         
-    return root
-        
-        
+    return root        
         
 def parse_tokens(tokens):
     """ Returns a tuple:
@@ -113,7 +110,23 @@ def parse_tokens(tokens):
     
     elif start == "call":
         """ See bullet point in pdf doc """
-        #TODO
+        check(len(tokens) > 2)
+        expect(tokens[1], "(")
+        (name1, tokens) = parse_tokens(tokens[2:])
+        check(len(tokens) > 0)
+        (name2, tokens) = parse_tokens(tokens[1:])
+        
+        expect(tokens[-1], ")")
+        tokens = tokens[0:-1]
+
+        expressions = []
+        while tokens:
+            (exp, p_tokens) = parse_tokens(tokens[1:])
+            is_expr(exp)
+            expressions.append(exp)
+            tokens = p_tokens
+            
+        return (Method(name1, name2, *expressions) , tokens)
 
     else:
         # A variable
