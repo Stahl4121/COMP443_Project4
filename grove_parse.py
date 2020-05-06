@@ -109,19 +109,26 @@ def parse_tokens(tokens):
         
     
     elif start == "call":
-        """ See bullet point in pdf doc """
+        print(1)
+        print(tokens)
         check(len(tokens) > 2)
         expect(tokens[1], "(")
         (name1, tokens) = parse_tokens(tokens[2:])
+        print(2)
+        print(tokens)
+        print(name1)
         check(len(tokens) > 0)
-        (name2, tokens) = parse_tokens(tokens[1:])
-        
+        (name2, tokens) = parse_tokens(tokens)
+        print(3)
+        print(name2)
+        check(len(tokens) > 0)
         expect(tokens[-1], ")")
         tokens = tokens[0:-1]
 
         expressions = []
         while tokens:
             (exp, p_tokens) = parse_tokens(tokens[1:])
+            print(exp)
             is_expr(exp)
             expressions.append(exp)
             tokens = p_tokens
@@ -130,6 +137,7 @@ def parse_tokens(tokens):
 
     else:
         # A variable
+        print(start)
         check(is_var(start), "Variable names must start with an alphabetic character and continue with alphanumeric characters.")
         return ( Name(start), tokens[1:] )
 

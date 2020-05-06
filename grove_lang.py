@@ -48,21 +48,21 @@ class StringLiteral(Expr):
         return self.value
         
 class Method(Expr):
-    def __init__(self, objName, methodName, *expressions):
-        self.varName = varName
+    def __init__(self, varname, methodName, *expressions):
+        self.varname = varname
         self.methodName = methodName
         self.expressions = expressions
 
     def eval(self):
         # If the object name does not exist in the variables table, raise a GroveError.
-        if varName not in var_table.keys():
-            raise GroveError("GROVE: Undefined variable " + str(varName))
+        if self.varname not in var_table.keys():
+            raise GroveError("GROVE: Undefined variable " + str(self.varname))
 
-        obj = var_table[self.varName]
+        obj = var_table[self.varname]
         methodList = [method for method in dir(obj) if callable(getattr(obj, method))]
         
         if self.methodName not in methodList:
-            raise GroveError("GROVE: Undefined method " + str(methodName))
+            raise GroveError("GROVE: Undefined method " + str(self.methodName))
 
         getattr(obj, methodName)(*expressions)
 
