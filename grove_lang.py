@@ -105,12 +105,15 @@ class PyObject(Expr):
                 module = eval(modAndObj[0])
                 obj = getattr(module, modAndObj[1])
             except:
-                #Edge case, I am struggling Dr. Hutchins
-                #https://stackoverflow.com/questions/11181519/python-whats-the-difference-between-builtin-and-builtins
-                import builtins 
-                modAndObj = self.value.split(".")
-                module = eval(modAndObj[0].replace("__",""))
-                obj = getattr(module, modAndObj[1])
+                try:
+                    #Edge case, I am struggling Dr. Hutchins
+                    #https://stackoverflow.com/questions/11181519/python-whats-the-difference-between-builtin-and-builtins
+                    import builtins 
+                    modAndObj = self.value.split(".")
+                    module = eval(modAndObj[0].replace("__",""))
+                    obj = getattr(module, modAndObj[1])
+                except:
+                    raise GroveError("GROVE: Undefined object " + self.value)
 
         return obj()
 
