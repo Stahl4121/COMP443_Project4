@@ -109,33 +109,23 @@ def parse_tokens(tokens):
         
     
     elif start == "call":
-        # print(1)
-        # print(tokens)
         check(len(tokens) > 2)
         expect(tokens[1], "(")
         (name1, tokens) = parse_tokens(tokens[2:])
-        # print(2)
-        # print(tokens)
-        # print(name1)
         check(len(tokens) > 0)
         (name2, tokens) = parse_tokens(tokens)
-        # print(3)
-        # print(name2)
         check(len(tokens) > 0)
-        expect(tokens[-1], ")")
-        tokens = tokens[0:-1]
 
-        print(name1, "//", name2, "//", tokens)
         expressions = []
-        while tokens:
+        while tokens and tokens[0] != ')':
             (exp, p_tokens) = parse_tokens(tokens)
-            print(exp)
             is_expr(exp)
             expressions.append(exp)
             tokens = p_tokens
         
-        print("EXPRESS: ", expressions)
-        return (Method(name1, name2, *expressions) , tokens)
+        expect(tokens[0], ")")
+
+        return (Method(name1, name2, *expressions) , tokens[1:])
 
     else:
         # A variable

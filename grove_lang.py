@@ -56,7 +56,6 @@ class Method(Expr):
         retVal = "No return value"
         varnameGot = self.varname.getName()
         methodNameGot = self.methodName.getName()
-        print("EXPRESS2: ", self.expressions)
 
         # If the object name does not exist in the variables table, raise a GroveError.
         if varnameGot not in var_table.keys():
