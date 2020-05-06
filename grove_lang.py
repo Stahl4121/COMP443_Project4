@@ -57,13 +57,19 @@ class Name(Expr):
         return self.name
 
     def eval(self):
-
         if self.name in var_table:
             return var_table[self.name]
         elif self.name == "quit" or self.name == "exit":
             sys.exit()
         else:
             raise GroveError("GROVE: undefined variable " + self.name)
+
+class PyObject(Expr):
+    def __init__(self, value):
+        self.value = value
+
+    def eval(self):
+        return eval(self.value)
 
 class Stmt:
     def __init__(self, varname, expr):

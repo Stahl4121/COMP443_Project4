@@ -32,6 +32,16 @@ def is_stringLiteral(s):
         return True
     return False
 
+def is_var(s):
+    if not (s[0].isalpha() or s[0] == "_"):
+        return False
+
+    if (len(s) > 1):
+        if not ''.join(filter(lambda i: i != '_', s[1:])).isalnum():
+            return False
+
+    return True
+
         
 def parse(s):
     """ Return an object representing a parsed command
@@ -85,10 +95,12 @@ def parse_tokens(tokens):
         expect(tokens[0], "=")
         if tokens[1] == "new":
             check(len(tokens) > 2)
-            (child, tokens) = parse_tokens(tokens[1:])
-            print(tokens)
-            child = eval(tokens[2])
-            return ( Stmt(varname, child), tokens )
+            names = tokens[2].split('.')
+            for name in names:
+                check(is_var(name), "Names must start with an alphabetic character and continue with alphanumeric characters.")
+            
+            child = PyObject(tokens[2])
+            return ( Stmt(varname, child), tokens[3:] )
         else:
             #Assign an expr
             (child, tokens) = parse_tokens(tokens[1:])
@@ -105,13 +117,6 @@ def parse_tokens(tokens):
 
     else:
         # A variable
-        # Check that it is alphabetic characters
-        if not (start[0].isalpha() or start[0] == "_"):
-            check(False, "Variable names must start with an alphabetic character")
-
-        if (len(start) > 1):
-            if not ''.join(filter(lambda i: i != '_', start[1:])).isalnum():
-                check(False, "Variable names must be alphanumeric characters only")
-
+        check(is_var(start), "Variable names must start with an alphabetic character and continue with alphanumeric characters.")
         return ( Name(start), tokens[1:] )
 
