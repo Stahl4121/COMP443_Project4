@@ -85,15 +85,10 @@ def parse_tokens(tokens):
         expect(tokens[0], "=")
         if tokens[1] == "new":
             check(len(tokens) > 2)
-            names = tokens[2].split(".")
-            check(len(names) < 3)
-            if len(names) == 1:
-                """ "set" <Name> "=" "new" <Name> """
-                #TODO
-            else:
-                """ "set" <Name> "=" "new" <Name>"."<Name> """
-                #TODO
-
+            (child, tokens) = parse_tokens(tokens[1:])
+            print(tokens)
+            child = eval(tokens[2])
+            return ( Stmt(varname, child), tokens )
         else:
             #Assign an expr
             (child, tokens) = parse_tokens(tokens[1:])
@@ -111,17 +106,14 @@ def parse_tokens(tokens):
     else:
         # A variable
         # Check that it is alphabetic characters
+        if not (start[0].isalpha() or start[0] == "_"):
+            check(False, "Variable names must start with an alphabetic character")
+
         if (len(start) > 1):
-            if ((not start[0].isalpha() and not start[0] == "_") or not (''.join(filter(lambda i: not i is '_', start[1:]))).isalnum()):
-                check(False, "Variable names must be alphabetic characters only")
-        elif (not start[0].isalpha() and not start[0] == "_"):
-            check(False, "Variable names must be alphabetic characters only")
+            if not ''.join(filter(lambda i: i != '_', start[1:])).isalnum():
+                check(False, "Variable names must be alphanumeric characters only")
+
         return ( Name(start), tokens[1:] )
-
-
-
-
-   
 
 if __name__ == "__main__":
     # First try some things that should work
