@@ -56,6 +56,7 @@ class Method(Expr):
         retVal = "No return value"
         varnameGot = self.varname.getName()
         methodNameGot = self.methodName.getName()
+        print("EXPRESS2: ", self.expressions)
 
         # If the object name does not exist in the variables table, raise a GroveError.
         if varnameGot not in var_table.keys():
@@ -68,7 +69,10 @@ class Method(Expr):
             raise GroveError("GROVE: Undefined method " + str(methodNameGot))
 
         if self.expressions:
-            retVal = getattr(obj, methodNameGot)(self.expressions)
+            evalExp = []
+            for exp in self.expressions:
+                evalExp.append(exp.eval())
+            retVal = getattr(obj, methodNameGot)(*evalExp)
         else:
             retVal = getattr(obj, methodNameGot)()
 
